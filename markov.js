@@ -47,17 +47,34 @@ MarkovBot.prototype.getRandomInt = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-MarkovBot.prototype.textGen = function () {
-	genWords = [];
+MarkovBot.prototype.textGen = function (maxlen) {
+	var genWords = [];
 	if (this.words.length <= 1) {
-		return "Get on the chat more you fuckwit. Jesus christ. I've had it up to here with your shit.";
+		return "Get on the chat more you fuckwit. Jesus christ. I've had it up to here with your shit. Stupid dicknugget.";
 	}
-	seedIndex = this.getRandomInt(0, this.words.length-2);
-	firstWord = this.words[seedIndex];
-	secondWord = this.words[seedIndex+1];
+	var seedIndex = this.getRandomInt(0, this.words.length-2);
+	var firstWord = this.words[seedIndex];
+	var secondWord = this.words[seedIndex+1];
+	for (var i = 0; i < Math.min(maxlen, this.words.length); i++) {
+		if (firstWord+"_"+secondWord in this.cache) {
+			var resList = this.cache[firstWord+"_"+secondWord];
+			var resultant = resList[Math.floor(Math.random()*resList.length)];
+			genWords.push(resultant);
+			tmp = this.cache[firstWord+"_"+secondWord];
+			firstWord = secondWord;
+			secondWord = tmp[Math.floor(Math.random()*tmp.length)];
+			console.log(firstWord);
+			console.log(secondWord);
+		}
+	}
+
+	return genWords.join(" ");
 
 }
 
+mark = new MarkovBot("word adf adga aer ab agre gre tgwf ab aeef 4t re sb rfe f hrtg er");
+mark.database();
+mark.textGen(20);
 
 
 
