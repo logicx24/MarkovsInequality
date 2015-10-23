@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+
+  "name": "FacebookMarkovChain",
+  "description": "A Markov Chain you train on a Facebook Messenger chat to simulate people's messages.",
+  "version": "1.0",
+  "content_scripts" : [{
+      "matches": [ "https://www.facebook.com/messages/*" ],
+      "js": ["scriptTagContext.js",
+             "jquery-1.11.3.min.js",
+             "facebot.js"
+            ]
+      }
+  ],
+  "permissions": [
+    "storage",
+    "activeTab"
+  ]
+}
