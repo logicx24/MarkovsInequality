@@ -63,8 +63,6 @@ MarkovBot.prototype.textGen = function (maxlen) {
 			tmp = this.cache[firstWord+"_"+secondWord];
 			firstWord = secondWord;
 			secondWord = tmp[Math.floor(Math.random()*tmp.length)];
-			console.log(firstWord);
-			console.log(secondWord);
 		}
 	}
 
