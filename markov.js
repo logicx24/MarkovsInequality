@@ -1,6 +1,5 @@
 
 var MarkovBot = function (text) {
-
 	this.txt = text.replace(/[,-\/#!$%\^&\*;:{}=\-_`~()]/g,"");
 	this.words = this.txt.split(" ");
 	this.cache = this.database();
@@ -70,9 +69,6 @@ MarkovBot.prototype.textGen = function (maxlen) {
 
 }
 
-mark = new MarkovBot("word adf adga aer ab agre gre tgwf ab aeef 4t re sb rfe f hrtg er");
-mark.database();
-mark.textGen(20);
 
 
 
