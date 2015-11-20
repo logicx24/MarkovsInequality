@@ -5,7 +5,7 @@
   "description": "A Markov Chain you train on a Facebook Messenger chat to simulate people's messages.",
   "version": "1.0",
   "content_scripts" : [{
-      "matches": [ "https://www.messenger.com/t/*" ],
+      "matches": [ "https://www.facebook.com/messages/*" ],
       "js": ["jquery-1.11.3.min.js",
              "markov.js",
              "getMessageHistory.js"
@@ -15,6 +15,7 @@
   "permissions": [
     "storage",
     "activeTab",
-    "https://www.messenger.com/t/*"
+    "https://www.messenger.com/t/*",
+    "cookies"
   ]
 }

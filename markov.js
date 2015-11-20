@@ -68,10 +68,3 @@ MarkovBot.prototype.textGen = function (maxlen) {
 	return genWords.join(" ");
 
 }
-
-
-
-
-
-
-
