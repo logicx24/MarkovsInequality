@@ -14,7 +14,8 @@ module.exports.action = function (api, message, callback) {
 					return setImmediate(callback);
 				}
 				else {
-					messageText = "This the HMS facebook bot. You have been mentioned by " + info.name + " in the group chat " + message.threadName + ". Here was the message: '" + message.body + "' \n\n If you believe this was done in error, please ignore this.";
+
+					messageText = "This the HMS facebook bot. You have been mentioned by " + info[Object.getOwnPropertyNames(info)[0]].name + " in the group chat " + message.threadName + ". Here was the message: '" + message.body + "' \n\n If you believe this was done in error, please ignore this.";
 					api.sendMessage(messageText, validID['userID']);
 					setImmediate(callback);
 				}
