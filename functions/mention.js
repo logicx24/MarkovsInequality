@@ -9,6 +9,9 @@ module.exports.action = function (api, message, cb) {
 			if (err) {
 				console.log(err);
 				return setImmediate(callback);
+			} else if (message.participantIDs.indexOf(ids[0]) < 0) {
+				console.log("You can only mention people that are in the current thread.");
+				api.sendMessage("You can only mention people that are in the current thread.", message.threadID);
 			} else {
 				var validID = ids[0];
 				api.getUserInfo(message['senderID'], function (err, info) {
@@ -17,6 +20,7 @@ module.exports.action = function (api, message, cb) {
 						return setImmediate(callback);
 					}
 					else {
+						console.log(info);
 						messageText = "This the HMS facebook bot. You have been mentioned by " + info[Object.getOwnPropertyNames(info)[0]].name + " in the group chat " + message.threadName + ". Here was the message: '" + message.body + "' \n\n If you believe this was done in error, please ignore this.";
 						api.sendMessage(messageText, validID['userID']);
 						return setImmediate(callback);
