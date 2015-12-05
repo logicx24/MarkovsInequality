@@ -1,0 +1,24 @@
+{
+  "name": "MarkovsInequality",
+  "version": "0.0.0",
+  "description": "A bot for the HMS Facebook Chat",
+  "main": "eventloop.js",
+  "dependencies": {
+    "async": "^1.5.0",
+    "facebook-chat-api": "^1.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/logicx24/MarkovsInequality.git"
+  },
+  "author": "Aakash Japi",
+  "license": "MIT License",
+  "bugs": {
+    "url": "https://github.com/logicx24/MarkovsInequality/issues"
+  },
+  "homepage": "https://github.com/logicx24/MarkovsInequality"
+}

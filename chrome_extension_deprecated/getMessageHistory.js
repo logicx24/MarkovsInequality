@@ -21,7 +21,7 @@ function getMessageHistory () {
 		"user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.122 Safari/537.36", 
 		"content-type": "application/x-www-form-urlencoded", 
 		"accept": "*/*", 
-		"cache-control": "no-cache", 
+		"cache-contr ol": "no-cache", 
 		"referer": "https://www.facebook.com/messages/zuck"
 	};
 	var key1 = "messages[thread_fbids][" + talk.toString() + "][offset]";
