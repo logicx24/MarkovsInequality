@@ -9,10 +9,10 @@ module.exports.action = function (api, message, cb) {
 			if (err) {
 				console.log(err);
 				return setImmediate(callback);
-			} else if (message.participantIDs.indexOf(parseInt(ids[0]['userID'])) < 0) {
-				// console.log(message.participantIDs);
-				// console.log(ids[0]['userID']);
-				// console.log(message.participantIDs.indexOf(parseInt(ids[0]['userID'])));
+			} else if (message.participantIDs.indexOf(ids[0]['userID']) == -1 && message.participantIDs.indexOf(parseInt(ids[0]['userID'])) == -1) {
+				console.log(message.participantIDs.indexOf(parseInt(ids[0]['userID'])));
+				console.log(message.participantIDs.map(function (num) { return parseInt(num); }));
+				console.log(parseInt(ids[0]['userID']));
 				console.log("You can only mention people that are in the current thread.");
 				api.sendMessage("You can only mention people that are in the current thread.", message.threadID);
 			} else {
