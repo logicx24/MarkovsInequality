@@ -14,7 +14,7 @@ module.exports.action = function (api, message, cb) {
 			console.log(err);
 			return setImmediate(cb);
 		} else {
-			api.getThreadHistory(tID, 0, 500, Date.now(), function (err, data) {
+			api.getThreadHistory(tID, 0, 1000, Date.now(), function (err, data) {
 				//Bucket each message by sender id
 				//train markov chain on it
 				//send message with text
@@ -25,8 +25,7 @@ module.exports.action = function (api, message, cb) {
 				} else {
 					var validID = id[0]['userID'];
 					async.eachSeries(data, function (msg, next) {
-						console.log(msg);
-						if (msg.senderID.split(":")[1] == validID && msg.body.indexOf("/") < 0) {
+						if (msg.body && msg.senderID.split(":")[1] == validID && msg.body.indexOf("/") < 0) {
 							msgHistory += msg.body;
 							msgHistory += " ";
 							setImmediate(next);

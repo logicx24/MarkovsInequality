@@ -5,7 +5,8 @@
   "main": "eventloop.js",
   "dependencies": {
     "async": "^1.5.0",
-    "facebook-chat-api": "^1.0.3"
+    "facebook-chat-api": "^1.0.3",
+    "request": "^2.67.0"
   },
   "devDependencies": {},
   "scripts": {
