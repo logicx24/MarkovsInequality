@@ -4,6 +4,28 @@ It's very easy to extend the bot: just add a function in the functions folder, w
 
 The main thing coming soon is subscriptions: a feature that allows you to subscribe to notifications on different events, like sporting events, tv shows, news keywords, twitter hashtags, etc. 
 
+To set this up, you'll need to make a login.js file in the topmost level of this project that contains: 
+
+module.exports = {
+	email: "bot's facebook email"
+	password: "bot's facebook password",
+	hmsspacekey: "api key for hms.space (a url archiving/shortening service this bot uses)",
+	creatoremail: "not used"
+};
+
+
+Commands:
+
+@name lastname : works like a mention. Messages the person and lets them know they were mentioned (and tells them the text of the message they were mentioned in). Can be used as part of a sentence, and you can do multiple mentions in a single message. You can only mention people in the current group chat.
+
+/markov firstname lastname : Trains a markov chain on this persons recent messages, and then outputs generated text. 
+
+Links must be posted in their own message, for now, but any link posted appropriately will be automatically archived and shortened.
+
+/test : posts a stupid message.  
+
+
+
 
 The MIT License (MIT)
 

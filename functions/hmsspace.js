@@ -7,6 +7,7 @@ module.exports.matchPattern = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-z
 module.exports.action = function (api, message, cb) {
 	var target = "http://hms.space/api/add";
 	var toShorten = message.body.split(module.exports.matchPattern);
+	
 	request.post({
 		url: target,
 		form: {"apiKey": key, "creator": message.senderName, "target": message.body}
