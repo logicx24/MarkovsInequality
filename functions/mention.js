@@ -3,7 +3,7 @@ async = require("async");
 module.exports.matchPattern = /@/;
 //@name lastname must be the format for mentions. They can be put in the middle of sentences. Multiple mentions also work.
 module.exports.action = function (api, message, cb) {
-	async.eachSeries(message.body.split(module.exports.matchPattern).slice(1), function (frag, callback) {
+	async.forEach(message.body.split(module.exports.matchPattern).slice(1), function (frag, callback) {
 		mentioned = frag.split(" ").slice(0,2).join(" ");
 		api.getUserID(mentioned, function (err, ids) {
 			if (err) {

@@ -18,10 +18,10 @@ module.exports.action = function (api, message, cb) {
 		} else {
 			var res = JSON.parse(body);
 			if (res["Success"]) {
-				api.sendMessage(res["ResultURL"], message.threadID);
+				var url = res["ResultURL"];
+				api.sendMessage(url, message.threadID);
 				return setImmediate(cb);
 			} else {
-				console.log(res);
 				api.sendMessage("hms.space fucked up. Blame @jordon wing.", message.threadID);
 			}
 		}
