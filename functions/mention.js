@@ -1,21 +1,8 @@
 async = require("async");
+cache = require("../mentionsCache");
 
 module.exports.matchPattern = /@/;
-
-function getIDByFirstName(name, message) {
-    var matchCount = 0;
-    var matchIndex = -1;
-    for (var i in message.participantNames) {
-        if (name.toLowerCase() == message.participantNames[i].toLowerCase()) {
-            matchCount++;
-            matchIndex = i;
-        }
-    }
-    
-    if (matchCount == 1)
-        return message.participantIDs[matchIndex];
-    return null;
-}
+var idCache = new cache.MentionsCache();
 
 function sendMentionMessage(api, mentionedName, mentionedID, message, callback) {
     api.getUserInfo(message['senderID'], function (err, info) {
@@ -26,6 +13,7 @@ function sendMentionMessage(api, mentionedName, mentionedID, message, callback) 
         else {
             messageText = "This the HMS facebook bot. You have been mentioned by " + info[Object.getOwnPropertyNames(info)[0]].name + " in the group chat " + message.threadName + ". Here was the message: '" + message.body + "' \n\n If you believe this was done in error, please ignore this.";
             api.sendMessage(messageText, mentionedID);
+            idCache.addToCache(message.threadID, mentionedName, mentionedID);
             return setImmediate(callback);
         }
     });
@@ -35,7 +23,7 @@ function sendMentionMessage(api, mentionedName, mentionedID, message, callback) 
 module.exports.action = function (api, message, cb) {
     async.forEach(message.body.split(module.exports.matchPattern).slice(1), function (frag, callback) {
         mentioned = frag.split(" ").slice(0,2).join(" ");
-        var id = getIDByFirstName(mentioned.split(" ")[0], message);
+        var id = idCache.getID(message.threadID, mentioned);
         if (id)
             return sendMentionMessage(api, mentioned, id, message, callback);
         
