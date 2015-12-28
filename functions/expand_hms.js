@@ -18,7 +18,11 @@ module.exports.action = function(api, message, cb) {
     response.on('end', function() {
       var parsed = JSON.parse(body);
       if (parsed.Success) {
-        var msg = parsed.Result.TargetURL + " (from http://hms.space/" + expandPath + ")";
+        var s = parsed.Result.TargetURL + " (from http://hms.space/" + expandPath + ")";
+        var msg = {
+          body: s,
+          url: parsed.Result.TargetURL
+        }
         api.sendMessage(msg, message.threadID);
       }
     })
