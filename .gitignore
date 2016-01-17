@@ -1,2 +1,5 @@
 node_modules/*
 login.js
+*.swp
+*.swo
+*.swn
