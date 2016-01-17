@@ -19,6 +19,27 @@ function sendMentionMessage(api, mentionedName, mentionedID, message, callback) 
     });
 }
 
+function buildCache(api, threadID, participantIDs) {
+    api.getUserInfo(participantIDs, function(err, results) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+
+        for (var userID in results) {
+            idCache.addToCache(threadID, results[userID].name, userID);
+        }
+    });
+}
+
+module.exports.onMessage = function(api, message) {
+    // Make sure we have the ID of everyone in the chat
+    // Since get user info is asynchronous, this is technically a race condition on first load
+    // But that's almost never going to be an issue.
+    if (message.participantIDs.length > idCache.getSize(message.threadID))
+      buildCache(api, message.threadID, message.participantIDs);
+}
+
 //@name lastname must be the format for mentions. They can be put in the middle of sentences. Multiple mentions also work.
 module.exports.action = function (api, message, cb) {
     async.forEach(message.body.split(module.exports.matchPattern).slice(1), function (frag, callback) {
