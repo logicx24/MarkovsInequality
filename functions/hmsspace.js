@@ -26,7 +26,7 @@ module.exports.action = function (api, message, cb) {
                 var res = JSON.parse(body);
                 if (res["Success"]) {
                     var url = res["ResultURL"];
-                    api.sendMessage(url, message.threadID);
+                    //api.sendMessage(url, message.threadID);
                     return setImmediate(cb);
                 } else {
                     console.error(res)
