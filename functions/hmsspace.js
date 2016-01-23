@@ -29,6 +29,7 @@ module.exports.action = function (api, message, cb) {
                     api.sendMessage(url, message.threadID);
                     return setImmediate(cb);
                 } else {
+                    console.error(res)
                     api.sendMessage("hms.space fucked up. Blame @jordon wing.", message.threadID);
                 }
             }
