@@ -12,6 +12,10 @@ ChatCache.prototype.addFullName = function(name, userID) {
   this.cache[key] = userID;
 }
 
+ChatCache.prototype.getSize = function() {
+  return Object.keys(this.cache).length;
+}
+
 ChatCache.prototype.getIDByFirstName = function(name) {
   var matchCount = 0;
   var match;
@@ -55,6 +59,12 @@ MentionsCache.prototype.getID = function(chatID, name) {
   if (this.cache[chatID])
     return this.cache[chatID].getID(name);
   return null;
+}
+
+MentionsCache.prototype.getSize = function(chatID) {
+    if (this.cache[chatID])
+      return this.cache[chatID].getSize();
+    return 0;
 }
 
 module.exports.MentionsCache = MentionsCache;
