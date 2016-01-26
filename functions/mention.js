@@ -11,7 +11,16 @@ function sendMentionMessage(api, mentionedName, mentionedID, message, callback) 
             return setImmediate(callback);
         }
         else {
-            messageText = "This the HMS facebook bot. You have been mentioned by " + info[Object.getOwnPropertyNames(info)[0]].name + " in the group chat " + message.threadName + ". Here was the message: '" + message.body + "' \n\n If you believe this was done in error, please ignore this.";
+            var mentionedFullName = info[Object.getOwnPropertyNames(info)[0]].name;
+            messageText = mentionedFullName + " mentioned you";
+            if (message.threadName ) {
+                if (message.threadName == mentionedFullName) {
+                    messageText += " in your personal chat";
+                } else {
+                    messageText += " in " + message.threadName;
+                }
+            }
+            messageText += ": " + message.body;
             api.sendMessage(messageText, mentionedID);
             idCache.addToCache(message.threadID, mentionedName, mentionedID);
             return setImmediate(callback);
