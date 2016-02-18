@@ -16,6 +16,13 @@ ChatCache.prototype.getSize = function() {
   return Object.keys(this.cache).length;
 }
 
+ChatCache.prototype.getAllIDs = function() {
+    var cache = this.cache;
+    return Object.keys(this.cache).map(function (key) {
+        return cache[key];
+    });
+}
+
 ChatCache.prototype.getIDByFirstName = function(name) {
   var matchCount = 0;
   var match;
@@ -67,4 +74,9 @@ MentionsCache.prototype.getSize = function(chatID) {
     return 0;
 }
 
+MentionsCache.prototype.getAllIDs = function(chatID) {
+    if (this.cache[chatID])
+      return this.cache[chatID].getAllIDs();
+    return [];
+}
 module.exports.MentionsCache = MentionsCache;
