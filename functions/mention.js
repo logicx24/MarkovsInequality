@@ -8,6 +8,8 @@ var idCache = new cache.MentionsCache();
 function sendMentionMessage(api, mentionedName, mentionedID, message, callback) {
     if (DISALLOWED_MENTION_IDS.indexOf(mentionedID) != -1)
         return setImmediate(callback);
+    else if (mentionedID == message['senderID'] && mentionedName == "everyone")
+        return setImmediate(callback);
     api.getUserInfo(message['senderID'], function (err, info) {
         if (err) {
             console.log(err);
@@ -16,6 +18,7 @@ function sendMentionMessage(api, mentionedName, mentionedID, message, callback) 
         else {
             var mentionedFullName = info[Object.getOwnPropertyNames(info)[0]].name;
             var messageText = mentionedFullName;
+            console.log("Sending to: ", mentionedID);
             
             if (mentionedName == "everyone")
                 messageText += " group";
@@ -30,7 +33,8 @@ function sendMentionMessage(api, mentionedName, mentionedID, message, callback) 
             }
             messageText += ": " + message.body;
             api.sendMessage(messageText, mentionedID);
-            idCache.addToCache(message.threadID, mentionedName, mentionedID);
+            if (mentionedName != "everyone")
+                idCache.addToCache(message.threadID, mentionedName, mentionedID);
             return setImmediate(callback);
         }
     });
