@@ -29,7 +29,9 @@ module.exports.action = function (api, message, cb) {
                     //api.sendMessage(url, message.threadID);
                     return setImmediate(cb);
                 } else {
-                    console.error(res)
+                    if (body.indexOf("redirect loops") != -1)
+                        return setImmediate(cb);
+                    console.error(res);
                     api.sendMessage("hms.space fucked up. Blame @jordon wing.", message.threadID);
                 }
             }
