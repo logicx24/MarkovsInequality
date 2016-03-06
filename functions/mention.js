@@ -61,7 +61,7 @@ module.exports.onMessage = function(api, message, cb) {
   // Make sure we have the ID of everyone in the chat
   // Since get user info is asynchronous, this is technically a race condition on first load
   // But that's almost never going to be an issue.
-  if (message.indexOf("@") != -1) {
+  if (message.body.indexOf("@") != -1) {
     // quit now. mention action will take care of the cache.
     return;
   }
