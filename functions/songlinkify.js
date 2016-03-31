@@ -27,9 +27,11 @@ module.exports.action = function(api, message, cb) {
     request(targetUrl + link, function(err, res, body) {
       if (!err && res.statusCode === 200) {
         var data = JSON.parse(body);
-        var frankie_msg = String.format("{0} - {1}:  {2}" + Array(30).join(" "),
+        if (data['songlink'] !== '') {
+          var frankie_msg = String.format("{0} - {1}:  {2}" + Array(30).join(" "),
             data['artists'][0], data['title'], data['songlink']);
-        api.sendMessage(frankie_msg, message.threadID);
+          api.sendMessage(frankie_msg, message.threadID);
+        }
       }
     });
   }
