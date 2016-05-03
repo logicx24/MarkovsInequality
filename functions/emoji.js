@@ -1,5 +1,5 @@
 /*
- * Module for emoji actions in the bot. 
+ * Module for emoji actions in the bot.
  *
  * Currently very naive: the matchPattern just matches any occurrence of
  * any of the emoji triggers (e.g. *shrug*), then the action checks for the
@@ -7,27 +7,17 @@
  * the first trigger it finds, not all of them.
 */
 
-module.exports.matchPattern = /(\*shrug\*)|(\/stare)|(\/lenny)/g;
+module.exports.matchPattern = /\/emoji/g;
 
 module.exports.action = function(api, message, cb) {
-  if (message.body.indexOf("*shrug*") != -1) {
-    api.sendMessage("¯\\_(ツ)_/¯", message.threadID);
-  } else if (message.body.indexOf("/stare") == 0) {
-    var possibleName = message.body.split(" ")[1];
-    var isName = false;
-    if (possibleName) {
-      for (var i in message.participantNames) {
-        if (message.participantNames[i].split(" ")[0].toLowerCase() == possibleName) {
-          isName = true;
-        }
-      }
-    }
-
-    var msg = "ಠ_ಠ";
-    if (isName)
-      msg = "@" + possibleName + ": " + msg;
-    api.sendMessage(msg, message.threadID);
-  } else if (message.body.indexOf("/lenny") == 0) {
-    api.sendMessage("( ͡° ͜ʖ ͡°  )", message.threadID);
+  if (message.threadID !== message.senderID) {
+    cb();
+    return;
   }
+  var emojis = [
+    "¯\\_(ツ)_/¯",
+    "ಠ__ಠ",
+    "( ͡° ͜ʖ ͡° )"
+  ];
+  api.sendMessage(emojis.join("\r\n"), message.threadID);
 }

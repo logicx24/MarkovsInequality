@@ -4,7 +4,7 @@
  * Not designed for robust string processing, and currently
  * just uses a setTimer call to set the reminder.
 */
-var idCache = require("./mention.js")['cache'];
+var cache = require("../cache").cache;
 module.exports.matchPattern = /^(F|f)rankie[,:]? remind me/g
 
 var TIME_UNITS = {
@@ -49,6 +49,11 @@ function getTimeArray(s) {
 
 
 module.exports.action = function(api, message, cb) {
+  if (message.threadID !== message.senderID) {
+    cb();
+    return;
+  }
+
   var tokens = message.body.split(" ").splice(1);
 
   var stage = 1;
@@ -105,7 +110,7 @@ module.exports.action = function(api, message, cb) {
 
   if (stage != 2 || msg == "") {
     // Bad reminder.
-    api.sendMessage("Bad reminder. Format: " + 
+    api.sendMessage("Bad reminder. Format: " +
         "Frankie remind me in <time> to <action>", message.threadID);
     return;
   }
