@@ -8,7 +8,8 @@ function formatDateString() {
   var d = new Date();
   var datestr = "" + d.getDate() + "/" + d.getMonth();
   var timeOfDay = d.getHours() >= 12 ? "PM" : "AM";
-  var timestr = "" + d.getHours() + ":" + d.getMinutes();
+  var minutes = ("0" + d.getMinutes()).slice(-2);
+  var timestr = "" + d.getHours() + ":" + minutes;
   var dayOfWeekDict = [
     "Sunday", "Monday", "Tuesday", "Wednesday",
     "Thursday", "Friday", "Saturday"]
@@ -76,8 +77,10 @@ module.exports.action = function (api, message, cb) {
       var id = cache.getIDFromName(mentioned);
       if (id)
         return sendMentionMessage(api, mentioned, id, message, hist, callback);
-      else
-        console.log("Id not found");
+      id = cache.getIDFromName(mentioned.split(" ")[0]);
+      if (id)
+        return sendMentionMessage(api, mentioned, id, message, hist, callback);
+      console.log ("id not found for " + mentioned);
     }, cb);
   });
 
