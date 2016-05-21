@@ -5,7 +5,7 @@ var cache = require("../cache");
 
 // var cache = new Cache();
 
-module.exports.matchPattern = /[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+module.exports.matchPattern = /\b(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?\b/g;
 
 // First, checks if it isn't implemented yet.
 if (!String.format) {
