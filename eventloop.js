@@ -20,7 +20,9 @@ chatApp({email: loginInfo.email, password: loginInfo.password}, function (err, a
 
       cache.load(api, message.threadID, function() {
         // console.log(cache.namesCache)
-        // console.log(cache.threadsCache)
+
+        // console.log(cache.threadsCache[message.threadID])
+        console.log(message.threadID)
         for (var f in functions) {
           var func = functions[f];
           var callback = function(){};

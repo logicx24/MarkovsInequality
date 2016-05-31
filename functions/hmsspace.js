@@ -4,45 +4,58 @@ var request = require("request");
 var cache = require("../cache").cache;
 
 module.exports.matchPattern =
-/\b(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?\b/g;
+/\b([A-Za-z]{3,9}):\/\/([-;:&=\+\$,\w]+@{1})?([-A-Za-z0-9\.]+)+:?(\d+)?((\/[-\+~%/\.\w]+)?\??([-\+=&;%@\.\w]+)?#?([\w]+)?)?\b/g;
 
+function contains(string, word) {
+    return string.indexOf(word) !== -1;
+}
+
+function getUrlType(url) {
+    if (contains(url, "songl.ink"))
+        return "songlink";
+    else if (contains(url, "youtube.com/watch") || contains(url, "youtu.be"))
+        return "youtube";
+    else if (contains(url, "open.spotify.com/track"))
+        return "spotify"
+    else
+        return "other"
+}
+
+// ASSUMPTION:  only one music chat exists.
 module.exports.action = function (api, message, cb) {
-    var target = "http://localhost:6543/recommendations/new";
+    if (message.threadID != 872334199540444) {
+        return;
+    }
+    console.log("message received from Music chat");
+    var target = "http://localhost:6543/recommendations";
     var allLinks = message.body.match(module.exports.matchPattern);
     for (var i in allLinks) {
-        var toShorten = allLinks[i];
+        var link = allLinks[i];
+        if (getUrlType(link) === "other")
+            continue;
+
+        console.log("attemptiong upload of nnew link " + link + "...");
         var senderName = cache.senderFromID(message.senderID);
         var threadName = cache.threadFromID(message.threadID);
         var timestampUTC = Date.now()
+        console.log(senderName);
+        console.log(timestampUTC);
         request.post({
             url: target,
             form: {
                 "api_key": key,
                 "creator": senderName,
                 "date_created":timestampUTC,
-                "link": toShorten,
+                "link": link,
                 // "chat_id": message.threadID,
                 // "chat_name": threadName,
             }
         }, function(err, httpResponse, body){
-            if (err) {
-                console.log(err);
-                return setImmediate(cb);
+            if (err || httpResponse.statusCode === 404) {
+                console.log(body);
+                return console.error('upload failed:', err);
             } else {
-                console.log(body)
-                // var res = JSON.parse(body);
-                // if (res["Success"]) {
-                //     var url = res["ResultURL"];
-                //     // DO NOT send messages; will get banned if so.
-                //     // api.sendMessage("logged: " + url, message.threadID);
-                //     return setImmediate(cb);
-                // } else {
-                //     if (body.indexOf("redirect loops") != -1)
-                //         return setImmediate(cb);
-                //     console.error(res);
-                //     // api.sendMessage("Eric's music frontend fucked up.",
-                //     //     message.threadID);
-                // }
+                console.log('upload successful!');
             }
         });
     }
