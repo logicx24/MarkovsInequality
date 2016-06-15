@@ -23,7 +23,7 @@ function getUrlType(url) {
 
 // ASSUMPTION:  only one music chat exists.
 module.exports.action = function (api, message, cb) {
-    if (message.threadID != 872334199540444) {
+    if (message.threadID !=1093084330762960) { // 872334199540444) {
         return;
     }
     console.log("message received from Music chat");
