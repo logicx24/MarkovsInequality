@@ -5,8 +5,13 @@
   "main": "eventloop.js",
   "dependencies": {
     "async": "^1.5.0",
+    "express": "4.13.4",
     "facebook-chat-api": "^1.0.3",
     "request": "^2.67.0"
+  },
+  "engines": {
+    "node": "4.2.1",
+    "npm": "2.14.7"
   },
   "devDependencies": {},
   "scripts": {
@@ -17,7 +22,7 @@
     "type": "git",
     "url": "git://github.com/logicx24/MarkovsInequality.git"
   },
-  "author": "Aakash Japi",
+  "author": "Aakash Japi, Eric Pai, Jordon Wing",
   "license": "MIT License",
   "bugs": {
     "url": "https://github.com/logicx24/MarkovsInequality/issues"

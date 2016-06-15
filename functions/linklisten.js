@@ -1,5 +1,5 @@
-var key = require("../login")['hmsspacekey'];
-var email = require("../login")['creatoremail'];
+// var key = require("../login")['hmsspacekey'];
+// var email = require("../login")['creatoremail'];
 var request = require("request");
 var cache = require("../cache");
 
