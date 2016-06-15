@@ -1,10 +1,12 @@
-var key = require("../login")['musicfrontendkey'];
-var email = require("../login")['creatoremail'];
+// var key = require("../login")['musicfrontendkey'];
+// var email = require("../login")['creatoremail'];
 var request = require("request");
 var cache = require("../cache").cache;
 
 module.exports.matchPattern =
 /\b([A-Za-z]{3,9}):\/\/([-;:&=\+\$,\w]+@{1})?([-A-Za-z0-9\.]+)+:?(\d+)?((\/[-\+~%/\.\w]+)?\??([-\+=&;%@\.\w]+)?#?([\w]+)?)?\b/g;
+
+var key = process.env.FBMUSIC_API_KEY
 
 function contains(string, word) {
     return string.indexOf(word) !== -1;
@@ -23,11 +25,11 @@ function getUrlType(url) {
 
 // ASSUMPTION:  only one music chat exists.
 module.exports.action = function (api, message, cb) {
-    if (message.threadID !=1093084330762960) { // 872334199540444) {
+    if (message.threadID != process.env.FBCHAT_ID) {
         return;
     }
     console.log("message received from Music chat");
-    var target = "http://localhost:6543/recommendations";
+    var target = "https://fbmusic.herokuapp.com/recommendations";
     var allLinks = message.body.match(module.exports.matchPattern);
     for (var i in allLinks) {
         var link = allLinks[i];
