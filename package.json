@@ -10,6 +10,7 @@
   },
   "devDependencies": {},
   "scripts": {
+    "start": "node eventloop.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
