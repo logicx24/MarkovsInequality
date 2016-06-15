@@ -1,12 +1,15 @@
 var chatApp = require("facebook-chat-api");
 var async = require("async");
-var loginInfo = require("./login");
+// var loginInfo = require("./login");
 var functions = require("./functions");
 var cache = require("./cache").cache;
 
 console.log('Logging In')
 
-chatApp({email: loginInfo.email, password: loginInfo.password}, function (err, api) {
+var email = process.env.BOT_EMAIL;
+var password = process.env.BOT_PASSWORD;
+
+chatApp({email: email, password: password}, function (err, api) {
   if (err) {
     console.log(err);
   } else {
