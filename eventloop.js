@@ -57,6 +57,7 @@ chatApp({email: email, password: password}, function (err, api) {
   var time = 30;
   while (time > 0) {
     console.log("time left to approve: " + time)
+    time -= 1;
     sleep.sleep(1);
   }
 
