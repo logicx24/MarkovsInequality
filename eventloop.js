@@ -38,13 +38,15 @@ var loginApprovalCode = process.env.LOGIN_APPROVAL_CODE
 console.log(loginApprovalCode)
 
 chatApp({email: email, password: password}, function (err, api) {
+  var time;
   if(err) {
     switch (err.error) {
       case 'login-approval':
         console.log("APPROVE LOGIN ON FACEBOOK NOW!");
-        var time = 30;
-        while (time > 0) {
+        time = 30;
+        for (time=30; time > 0; time--) {
           console.log("time left to approve: " + time)
+          time -= 1;
           sleep.sleep(1);
         }
         err.continue(loginApprovalCode);
@@ -54,8 +56,8 @@ chatApp({email: email, password: password}, function (err, api) {
   }
 
   console.log("APPROVE LOGIN ON FACEBOOK NOW!");
-  var time = 30;
-  while (time > 0) {
+  time = 30;
+  for (time=30; time > 0; time--) {
     console.log("time left to approve: " + time)
     time -= 1;
     sleep.sleep(1);
