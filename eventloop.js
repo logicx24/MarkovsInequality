@@ -15,15 +15,19 @@ var rl = readline.createInterface({
   output: process.stdout
 });
 
+var loginApprovalCode = process.env.LOGIN_APPROVAL_CODE
+console.log(loginApprovalCode)
+
 chatApp({email: email, password: password}, function (err, api) {
   if(err) {
     switch (err.error) {
       case 'login-approval':
-        console.log('Enter code > ');
-        rl.on('line', function(line){
-          err.continue(line);
-          rl.close();
-        });
+        // console.log('Enter code > ');
+        // rl.on('line', function(line){
+        //   err.continue(line);
+        //   rl.close();
+        // });
+        err.continue(loginApprovalCode);
         break;
     }
     return;
