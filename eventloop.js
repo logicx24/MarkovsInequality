@@ -22,12 +22,12 @@ chatApp({email: email, password: password}, function (err, api) {
   if(err) {
     switch (err.error) {
       case 'login-approval':
-        // console.log('Enter code > ');
-        // rl.on('line', function(line){
-        //   err.continue(line);
-        //   rl.close();
-        // });
-        err.continue(loginApprovalCode);
+        console.log('Enter code > ');
+        rl.on('line', function(line){
+          err.continue(line);
+          rl.close();
+        });
+        // err.continue(loginApprovalCode);
         break;
     }
     return;
