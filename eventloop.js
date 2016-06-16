@@ -1,3 +1,21 @@
+// to satisfy the heroku gods...
+
+var express = require('express');
+var app     = express();
+
+app.set('port', (process.env.PORT || 5000));
+
+//For avoidong Heroku $PORT error
+app.get('/', function(request, response) {
+    var result = 'App is running'
+    response.send(result);
+}).listen(app.get('port'), function() {
+    console.log('App is running, server is listening on port ', app.get('port'));
+});
+
+
+
+
 var chatApp = require("facebook-chat-api");
 var async = require("async");
 // var loginInfo = require("./login");
@@ -24,7 +42,11 @@ chatApp({email: email, password: password}, function (err, api) {
     switch (err.error) {
       case 'login-approval':
         console.log("APPROVE LOGIN ON FACEBOOK NOW!");
-        sleep.sleep(30);
+        var time = 30;
+        while (time > 0) {
+          console.log("time left to approve: " + time)
+          sleep.sleep(1);
+        }
         err.continue(loginApprovalCode);
         break;
     }
