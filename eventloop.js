@@ -5,7 +5,7 @@ var app     = express();
 
 app.set('port', (process.env.PORT || 5000));
 
-//For avoidong Heroku $PORT error
+// For avoidong Heroku $PORT error
 app.get('/', function(request, response) {
     var result = 'App is running'
     response.send(result);
@@ -13,7 +13,11 @@ app.get('/', function(request, response) {
     console.log('App is running, server is listening on port ', app.get('port'));
 });
 
-
+// Prevent Heroku App from sleeping
+var http = require("http");
+setInterval(function() {
+    http.get("http://fbchatscanner.herokuapp.com");
+}, 300000); // every 5 minutes (300000)
 
 
 var chatApp = require("facebook-chat-api");
