@@ -53,6 +53,13 @@ chatApp({email: email, password: password}, function (err, api) {
     return;
   }
 
+  console.log("APPROVE LOGIN ON FACEBOOK NOW!");
+  var time = 30;
+  while (time > 0) {
+    console.log("time left to approve: " + time)
+    sleep.sleep(1);
+  }
+
   api.setOptions({
       forceLogin: true,
       logLevel: "info"
