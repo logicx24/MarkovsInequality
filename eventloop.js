@@ -3,6 +3,7 @@ var async = require("async");
 // var loginInfo = require("./login");
 var functions = require("./functions");
 var cache = require("./cache").cache;
+var sleep = require('sleep');
 
 console.log('Logging In')
 
@@ -22,12 +23,9 @@ chatApp({email: email, password: password}, function (err, api) {
   if(err) {
     switch (err.error) {
       case 'login-approval':
-        console.log('Enter code > ');
-        rl.on('line', function(line){
-          err.continue(line);
-          rl.close();
-        });
-        // err.continue(loginApprovalCode);
+        console.log("APPROVE LOGIN ON FACEBOOK NOW!");
+        sleep.sleep(30);
+        err.continue(loginApprovalCode);
         break;
     }
     return;
