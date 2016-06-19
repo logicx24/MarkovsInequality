@@ -16,7 +16,8 @@ app.get('/', function(request, response) {
 // Prevent Heroku App from sleeping
 var http = require("http");
 setInterval(function() {
-    http.get("http://fbchatscanner.herokuapp.com");
+  console.log('pinged app! (still alive)')
+  http.get("http://fbchatscanner.herokuapp.com");
 }, 300000); // every 5 minutes (300000)
 
 
@@ -29,9 +30,6 @@ var sleep = require('sleep');
 
 console.log('Logging In')
 
-var email = process.env.BOT_EMAIL;
-var password = process.env.BOT_PASSWORD;
-
 var readline = require("readline");
 var rl = readline.createInterface({
   input: process.stdin,
@@ -41,34 +39,36 @@ var rl = readline.createInterface({
 var loginApprovalCode = process.env.LOGIN_APPROVAL_CODE
 console.log(loginApprovalCode)
 
-chatApp({email: email, password: password}, function (err, api) {
+var credentials = {
+  email: process.env.BOT_EMAIL,
+  password: process.env.BOT_PASSWORD
+}
+
+var loginOptions = {
+  forceLogin: true,
+  logLevel: "info"
+}
+
+chatApp(credentials, loginOptions, function (err, api) {
+
   var time;
   if(err) {
     switch (err.error) {
       case 'login-approval':
+
+
         console.log("APPROVE LOGIN ON FACEBOOK NOW!");
         time = 30;
         for (time=30; time > 0; time--) {
           console.log("time left to approve: " + time)
           sleep.sleep(1);
         }
+
         err.continue(loginApprovalCode);
         break;
     }
     return;
-  } else {
-    console.log("APPROVE LOGIN ON FACEBOOK NOW!");
-    time = 30;
-    for (time=30; time > 0; time--) {
-      console.log("time left to approve: " + time)
-      sleep.sleep(1);
-    }
   }
-
-  api.setOptions({
-      forceLogin: true,
-      logLevel: "info"
-    });
 
   console.log("Starting Listening")
   api.listen(function (err, message) {
