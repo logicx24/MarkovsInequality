@@ -52,12 +52,15 @@ var loginOptions = {
 chatApp(credentials, loginOptions, function (err, api) {
 
   var time;
+
+  // console.log(err.error);
+
   if(err) {
     switch (err.error) {
       case 'login-approval':
 
 
-        console.log("APPROVE LOGIN ON FACEBOOK NOW!");
+      console.log("APPROVE LOGIN ON FACEBOOK NOW!");
         time = 30;
         for (time=30; time > 0; time--) {
           console.log("time left to approve: " + time)
@@ -69,6 +72,13 @@ chatApp(credentials, loginOptions, function (err, api) {
     }
     return;
   }
+
+  // logging out
+  console.log('logging out');
+  api.logout();
+
+chatApp(credentials, loginOptions, function(err, api) {
+  console.log('logging back in');
 
   console.log("Starting Listening")
   api.listen(function (err, message) {
@@ -92,6 +102,9 @@ chatApp(credentials, loginOptions, function (err, api) {
     });
 
   });
+})
+
+
 
 
 });
