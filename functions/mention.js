@@ -52,7 +52,7 @@ function sendMentionMessage(api, mentionedName,
       messageText += "[" + firstName + "] " + msg.body + brk;
     }
   }
-  // api.sendMessage(messageText, mentionedID);
+  api.sendMessage(messageText, mentionedID);
 
   return setImmediate(callback);
 }
