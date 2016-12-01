@@ -6,6 +6,12 @@ var shortid = require("shortid");
 var eventloop = require("./eventloop");
 var bus = require("./eventBus");
 
+var readline = require("readline");
+var rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
 currentBots = {};
 
 function createBotObject(email, password, cb) {
@@ -23,25 +29,51 @@ function startBotObject(botObject){
   return botObject.id;
 }
 
-bus.on("starting_error", function (botId) {
+function killBot(id) {
+  currentBots[id].killFunc();
+  currentBots[id].api.logout();
+  delete currentBots[req.query.id];
+}
+
+function start(email, pass) {
+  return startBotObject(createBotObject(email, pass));
+}
+
+bus.on("starting_error", function (err, botId) {
   //currentBots[botId].api.logout();
-  console.log("Everything is fucked", botId);
+  console.log(err.error, botId);
+
+    switch (err.error) {
+      case 'login-approval':
+        console.log("Go to facebook.com and enter a code for 2 factor-auth.");
+        console.log('> ');
+        rl.on('line', function(line) {
+          err.continue(line);
+          rl.close();
+        });
+        break;
+
+      case "Wrong username/password.":
+        console.log("Wrong email or password"); //Need to transmit to user somehow. 
+    }
+       
 });
 
 bus.on("error", function (botId) {
-  console.log("errors, errors everywhere")
-  startBotObject(currentBots[botId]);
+  var email = currentBots[botId].email;
+  var pass = currentBots[botId].password;
+  killBot(botId);
+  start(email, pass);
 });
 
 app.get("/create", function (req, res) { //?email=yourmother&password=isgay
-  console.log(req.query);
-  var botid = startBotObject(createBotObject(req.query.email, req.query.password));
+  var botid = start(req.query.email, req.query.password);
   res.send("Success!", botid);
 });
 
+
 app.get("/kill", function (req, res) {
-  currentBots[req.query.id].api.logout();
-  delete currentBots[req.query.id];
+  killBot(req.query.id);
   res.send("More dead than Harambe!");
 });
 

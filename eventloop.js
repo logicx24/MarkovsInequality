@@ -12,45 +12,42 @@ var loginOptions = {
   logLevel: "info"
 }
 
-module.exports.createBot = function (botObject, cb) {
+module.exports.createBot = function (botObject, errorfn) {
   credentials = {
     email: botObject.email,
     password: botObject.password
   }
-  chatApp(credentials, loginOptions, function(err, api) {
+  return chatApp(credentials, loginOptions, function(err, api) {
     if (err) {
-      bus.emit("starting_error", botObject.id);
-      return;
+      //bus.emit("starting_error", err, botObject.id);
+      console.log(1)
+      return errorfn(err, botObject);
     }
     console.log("Create api object");
-    //bus.emit("api", api, botObject.id);
     currentBots[botObject.id].api = api;
-    cb(botObject);
+    return botObject;
   });
 }
 
 module.exports.startBot = function (botObject) {
   if (botObject.api == undefined) {
-    console.log("Incorrect Login");
+    bus.emit("error", {"error": "API object is undefined"}, botObject.id);
   }
-  botObject.api.listen(function (err, message) {
-    console.log("message!")
+  var killfn = botObject.api.listen(function (err, message) {
     if (err) {
-      console.error(err);
-      //process.exit(-1);
-      bus.emit("error", botObject.id);
+      bus.emit("error", err, botObject.id);
     }
     cache.load(botObject.api, message.threadID, function() {
-      console.log(message.threadID)
       for (var f in functions) {
         var func = functions[f];
         var callback = function(){};
         if (message.body && message.body.match(func.matchPattern)) {
           func.action(botObject.api, message, callback);
-        } else if (!message.body) {
-          console.log("sticker!");
         }
       };
     });
   });
+
+  botObject.killFunc = killfn;
+  return botObject.id;
 }
