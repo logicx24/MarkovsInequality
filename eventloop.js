@@ -12,20 +12,18 @@ var loginOptions = {
   logLevel: "info"
 }
 
-module.exports.createBot = function (botObject, errorfn) {
+module.exports.createBot = function (botObject, next) {
   credentials = {
     email: botObject.email,
     password: botObject.password
   }
   return chatApp(credentials, loginOptions, function(err, api) {
     if (err) {
-      //bus.emit("starting_error", err, botObject.id);
-      console.log(1)
-      return errorfn(err, botObject);
+      return bus.emit("starting_error", err, botObject.id);
     }
     console.log("Create api object");
     currentBots[botObject.id].api = api;
-    return botObject;
+    next(botObject);
   });
 }
 
@@ -51,3 +49,4 @@ module.exports.startBot = function (botObject) {
   botObject.killFunc = killfn;
   return botObject.id;
 }
+
